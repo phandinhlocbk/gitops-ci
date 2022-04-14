@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app-argocd
+  namespace: argocd
+spec:
+  destination:
+    namespace: myapp
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/phandinhlocbk/gitops-ci.git
+    path: ExternalDNS
+    targetRevision: main
+    helm:
+      valueFiles:
+        - values.yaml
+  syncPolicy:
+    syncOptions: 
+    - CreateNamespace=true
+    automated:
+      selfHeal: true
+      prune: true
